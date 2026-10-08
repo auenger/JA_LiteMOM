@@ -1,0 +1,46 @@
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ailitewms}
+      POSTGRES_USER: ${POSTGRES_USER:-ailitewms}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-database-password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ailitewms} -d ${POSTGRES_DB:-ailitewms}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [wms]
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-ailitewms}:${POSTGRES_PASSWORD:-change-this-database-password}@database:5432/${POSTGRES_DB:-ailitewms}
+      JWT_SECRET: ${JWT_SECRET:-replace-with-a-long-random-secret}
+      INITIAL_ADMIN_USERNAME: ${INITIAL_ADMIN_USERNAME:-admin}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-Admin@123456}
+      SECOND_ADMIN_USERNAME: ${SECOND_ADMIN_USERNAME:-admin_backup}
+      SECOND_ADMIN_PASSWORD: ${SECOND_ADMIN_PASSWORD:-BackupAdmin@123456}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost}
+    depends_on:
+      database:
+        condition: service_healthy
+    networks: [wms]
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on: [backend]
+    networks: [wms]
+
+volumes:
+  postgres_data:
+
+networks:
+  wms:

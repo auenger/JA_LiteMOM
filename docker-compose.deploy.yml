@@ -1,0 +1,5 @@
+services:
+  backend:
+    image: ailitewms-backend:${RELEASE_ID}
+  frontend:
+    image: ailitewms-frontend:${RELEASE_ID}

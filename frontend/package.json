@@ -1,0 +1,38 @@
+{
+  "name": "ailitewms-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:screenshots": "node scripts/readme-screenshots.mjs",
+    "dev": "vite --host 0.0.0.0",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test:browser": "node tests/browser-smoke.mjs",
+    "test:monthly-inventory": "node tests/monthly-inventory.mjs",
+    "test:login": "node tests/login-remember.mjs",
+    "test:quantity": "node tests/quantity-focus.mjs",
+    "test:coding-filters": "node tests/coding-filters.mjs",
+    "test:inspection-loading": "node tests/inspection-document-loading.mjs",
+    "test:unverified-filters": "node tests/unverified-filters.mjs",
+    "test:inventory-copy": "node tests/inventory-copy.mjs",
+    "test:inspection-return": "node tests/inspection-return.mjs",
+    "test:receipt-word": "node tests/receipt-word.mjs",
+    "test:inspection-generation": "node tests/inspection-generation.mjs",
+    "test:inspection-split": "node tests/inspection-split.mjs"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "docx": "9.5.1",
+    "element-plus": "^2.9.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "puppeteer-core": "^24.16.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.5",
+    "vue-tsc": "^2.2.0"
+  }
+}
